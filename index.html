@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>NodeSchool: Get your server info</title>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css"
+        integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
+    <style>
+        html {
+            height: 100%;
+        }
+
+        body {
+            height: 100%;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+    </style>
+</head>
+
+<body>
+    <input id="button" class="button-xlarge pure-button" type="button" value="Get info">
+    <div id="infoContainer" style="display:none">
+        <a id="serverLink" target="_blank" class="pure-button" href="#" role="button">Open in a new tab</a> <br>
+        Password: <label id="password"></label>
+    </div>
+    <script>
+        window.addEventListener('DOMContentLoaded', (event) => {
+            function getServerInfo() {
+                console.log('getting server info');
+                fetch('index.js')
+                    .then(response => response.json())
+                    .then(info => {
+                        document.querySelector('#button').style.display = 'none';
+                        if (!info.url) {
+                            document.querySelector('body').append('There are no servers availables.');
+                            return;
+                        }
+                        const linkElem = document.querySelector('#serverLink');
+                        const passwordElem = document.querySelector('#password');
+                        const infoContainer = document.querySelector('#infoContainer');
+                        infoContainer.style.display = '';
+                        linkElem.href = info.url;
+                        passwordElem.innerText = info.password;
+                    });
+            }
+            const button = document.querySelector('#button');
+            button.addEventListener('click', getServerInfo);
+        });
+    </script>
+</body>
+
+</html>
